@@ -7,8 +7,10 @@ package
 	 * ...
 	 * @author renchu
 	 */
+	[SWF(width="800", height="500")]
 	public class Main extends Sprite 
 	{
+		private var scoreA:ScoreBoard, scoreB:ScoreBoard;
 		
 		public function Main():void 
 		{
@@ -20,8 +22,17 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
+			
+			dispatchElements(800, 500);
 		}
 		
+		private function dispatchElements(width:int, height:int):void 
+		{
+			scoreA = new ScoreBoard(width / 4, 20);
+			scoreB = new ScoreBoard(width / 4 * 3, 20);
+			this.addChild(scoreA);
+			this.addChild(scoreB);
+		}
 	}
 	
 }
