@@ -21,13 +21,13 @@ package
 			initScore();
 		}
 		
-		private function initScore():void
+		public function initScore():void
 		{
 			score = 0;
 			freshScore();
 		}
 		
-		private function addScore():void
+		public function addScore():void
 		{
 			score++;
 			freshScore();

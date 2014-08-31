@@ -11,6 +11,7 @@ package
 	public class Main extends Sprite 
 	{
 		private var scoreA:ScoreBoard, scoreB:ScoreBoard;
+		private var tipPanel:TipPanel;
 		
 		public function Main():void 
 		{
@@ -32,6 +33,10 @@ package
 			scoreB = new ScoreBoard(width / 4 * 3, 20);
 			this.addChild(scoreA);
 			this.addChild(scoreB);
+			
+			tipPanel = new TipPanel(width / 2, height / 2);
+			this.addChild(tipPanel);
+			tipPanel.playerAWins();
 		}
 	}
 	
