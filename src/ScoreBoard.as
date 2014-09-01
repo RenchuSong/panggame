@@ -48,6 +48,11 @@ package
 			this.x = x;
 			this.y = y;
 		}
+		
+		public function getScore():int
+		{
+			return score;
+		}
 	}
 
 }

@@ -34,11 +34,10 @@ package
 		
 		public function emit():void
 		{
-			var angle:Number = Math.random() * Math.PI * 2 / 6;
+			var angle:Number = Math.random() * Math.PI * 2 / 6 + Math.PI / 24;
 			var step:Number = Math.random()*3 + 3;
 			dx = Math.cos(angle) * step;
 			dy = Math.sin(angle) * step;
-			trace(angle + ": " + dx + " " + dy);
 			if (Math.random() > 0.5) dx *= -1;
 			if (Math.random() > 0.5) dy *= -1;
 		}

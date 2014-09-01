@@ -9,6 +9,7 @@ package
 	public class TipPanel extends Sprite
 	{
 		private var text:TextField;
+		private var pressTip:TextField;
 		
 		public function TipPanel(x:int, y:int)
 		{
@@ -24,9 +25,8 @@ package
 			text.y = -80;
 			this.addChild(text);
 			
-			var pressTip:TextField = new TextField();
+			pressTip = new TextField();
 			pressTip.width = 400;
-			pressTip.text = "Press 'Enter' to continue.";
 			pressTip.x = -100;
 			pressTip.y = 60;
 			this.addChild(pressTip);
@@ -35,16 +35,19 @@ package
 		public function controllHint():void
 		{
 			text.text = "Player A: Press 'A' and 'D' to controll left paddle.\nPlayer B: Press 'Left' and 'Right' to controll right paddle.";
+			pressTip.text = "Press 'Enter' to start game.";
 		}
 		
-		public function playerAWins():void
+		public function playerAWins(scoreA:int, scoreB:int):void
 		{
-			text.text = "Player A Wins!\nCongratulations!";
+			text.text = "Player A Wins!\nThe final score is " + scoreA +":"+ scoreB;
+			pressTip.text = "Press 'Enter' to restart game.";
 		}
 		
-		public function playerBWins():void
+		public function playerBWins(scoreA:int, scoreB:int):void
 		{
-			text.text = "Player B Wins!\nCongratulations!";
+			text.text = "Player B Wins!\nThe final score is " + scoreA +":"+ scoreB;
+			pressTip.text = "Press 'Enter' to restart game.";
 		}
 		
 	}

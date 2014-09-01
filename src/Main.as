@@ -43,13 +43,13 @@ package
 		{
 			// check score, judge win
 			if (scoreA.win()) {
-				tipPanel.playerAWins();
+				tipPanel.playerAWins(scoreA.getScore(), scoreB.getScore());
 				addChild(tipPanel);
 				controllHintGame();
 				return;
 			}
 			if (scoreB.win()) {
-				tipPanel.playerBWins();
+				tipPanel.playerBWins(scoreA.getScore(), scoreB.getScore());
 				addChild(tipPanel);
 				controllHintGame();
 				return;
@@ -58,7 +58,7 @@ package
 			var newX:Number = ball.x + ball.dx;
 			var newY:Number = ball.y + ball.dy;
 			
-			// TODO: handle paddle reflect
+			// handle paddle reflect
 			if (paddleA.reflectBall(ball, newX, newY)) return;
 			if (paddleB.reflectBall(ball, newX, newY)) return;
 			
