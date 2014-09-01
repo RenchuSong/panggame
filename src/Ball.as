@@ -9,9 +9,9 @@ package
 	public class Ball extends Sprite
 	{
 		private var centerX:int, centerY:int;
-		private var radius:int;
+		public var radius:int;
 		private var ball:Shape;
-		private var dx:Number, dy:Number;
+		public var dx:Number, dy:Number;
 		
 		public function Ball(x:int, y:int, radius:int, color:uint) 
 		{
@@ -34,13 +34,13 @@ package
 		
 		public function emit():void
 		{
-			var angle:Number = Math.random() * 60;
-			var step:Number = Math.random() + 1;
+			var angle:Number = Math.random() * Math.PI * 2 / 6;
+			var step:Number = Math.random()*3 + 3;
 			dx = Math.cos(angle) * step;
 			dy = Math.sin(angle) * step;
+			trace(angle + ": " + dx + " " + dy);
 			if (Math.random() > 0.5) dx *= -1;
 			if (Math.random() > 0.5) dy *= -1;
-			trace(dx + " " + dy);
 		}
 	}
 

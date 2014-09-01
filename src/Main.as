@@ -5,6 +5,7 @@ package
 	import flash.events.KeyboardEvent;
 	import flash.system.IMEConversionMode;
 	import flash.utils.Timer;
+	import flash.events.TimerEvent;
 	
 	/**
 	 * ...
@@ -20,8 +21,6 @@ package
 		
 		private var driver:Timer;
 		
-		private var status:int;	// 0: hint  1: during game
-		
 		public function Main():void 
 		{
 			if (stage) init();
@@ -34,10 +33,69 @@ package
 			// entry point
 			
 			dispatchElements(800, 500);
-			driver = new Timer(15);
+			driver = new Timer(10);
 			
 			tipPanel.controllHint();
 			controllHintGame();
+		}
+		
+		private function game(event:TimerEvent):void
+		{
+			// check score, judge win
+			if (scoreA.win()) {
+				tipPanel.playerAWins();
+				addChild(tipPanel);
+				controllHintGame();
+				return;
+			}
+			if (scoreB.win()) {
+				tipPanel.playerBWins();
+				addChild(tipPanel);
+				controllHintGame();
+				return;
+			}
+			
+			var newX:Number = ball.x + ball.dx;
+			var newY:Number = ball.y + ball.dy;
+			
+			// TODO: handle paddle reflect
+			if (paddleA.reflectBall(ball, newX, newY)) return;
+			if (paddleB.reflectBall(ball, newX, newY)) return;
+			
+			// handle top & bottom wall reflect
+			if (newY < ball.radius / 2) {
+				// TODO: hit sound
+				ball.dy = -ball.dy;
+				ball.x = newX;
+				ball.y = ball.radius - newY;
+				return;
+			}
+			if (newY > 500 - ball.radius / 2) {
+				// TODO: hit sound
+				ball.dy = -ball.dy;
+				ball.x = newX;
+				ball.y = 1000 - ball.radius - newY;
+				return;
+			}
+			
+			// handle outside left or right
+			if (newX < 0) {
+				// TODO: score sound
+				scoreB.addScore();
+				ball.reLocate();
+				ball.emit();
+				return;
+			}
+			if (newX > 800) {
+				// TODO: score sound
+				scoreA.addScore();
+				ball.reLocate();
+				ball.emit();
+				return;
+			}
+			
+			// safely move
+			ball.x = newX; ball.y = newY;
 		}
 		
 		private function dispatchElements(width:int, height:int):void 
@@ -62,17 +120,23 @@ package
 		
 		private function controllHintGame():void
 		{
-			status = 0;
+			driver.stop();
+			driver.removeEventListener(TimerEvent.TIMER, game);
 			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPlayGame);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHintGame);
 		}
 		
 		private function startGame():void
 		{
-			status = 1;
 			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyHintGame);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPlayGame);
+			driver.addEventListener(TimerEvent.TIMER, game);
+			paddleA.reLocate();
+			paddleB.reLocate();
+			scoreA.initScore();
+			scoreB.initScore();
 			ball.emit();
+			driver.start();
 		}
 		
 		private function keyHintGame(event:KeyboardEvent):void
@@ -85,7 +149,6 @@ package
 		
 		private function keyPlayGame(event:KeyboardEvent):void
 		{
-			ball.emit();
 			if (event.keyCode == 65) {
 				paddleA.moveUp();
 			}
