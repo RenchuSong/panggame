@@ -1,8 +1,10 @@
 package 
 {
+	import flash.display.NativeMenu;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.media.Sound;
 	import flash.system.IMEConversionMode;
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
@@ -21,6 +23,23 @@ package
 		
 		private var driver:Timer;
 		
+		[Embed(source = "start.mp3")]
+		private var startMusic:Class;
+		
+		[Embed(source = "hitwall.mp3")]
+		private var hitWallMusic:Class;
+		
+		[Embed(source = "hitpaddle.mp3")]
+		private var hitPaddleMusic:Class;
+		
+		[Embed(source = "score.mp3")]
+		private var scoreMusic:Class;
+		
+		[Embed(source = "win.mp3")]
+		private var winMusic:Class;
+		
+		private var startSound:Sound, hitWallSound:Sound, scoreSound:Sound, winSound:Sound, hitPaddleSound:Sound;
+		
 		public function Main():void 
 		{
 			if (stage) init();
@@ -37,6 +56,12 @@ package
 			
 			tipPanel.controllHint();
 			controllHintGame();
+			
+			startSound = new startMusic() as Sound;
+			hitWallSound = new hitWallMusic() as Sound;
+			scoreSound = new scoreMusic() as Sound;
+			winSound = new winMusic() as Sound;
+			hitPaddleSound = new hitPaddleMusic() as Sound;
 		}
 		
 		private function game(event:TimerEvent):void
@@ -46,12 +71,14 @@ package
 				tipPanel.playerAWins(scoreA.getScore(), scoreB.getScore());
 				addChild(tipPanel);
 				controllHintGame();
+				winSound.play();
 				return;
 			}
 			if (scoreB.win()) {
 				tipPanel.playerBWins(scoreA.getScore(), scoreB.getScore());
 				addChild(tipPanel);
 				controllHintGame();
+				winSound.play();
 				return;
 			}
 			
@@ -59,19 +86,25 @@ package
 			var newY:Number = ball.y + ball.dy;
 			
 			// handle paddle reflect
-			if (paddleA.reflectBall(ball, newX, newY)) return;
-			if (paddleB.reflectBall(ball, newX, newY)) return;
+			if (paddleA.reflectBall(ball, newX, newY)) {
+				hitPaddleSound.play();
+				return;
+			}
+			if (paddleB.reflectBall(ball, newX, newY)) {
+				hitPaddleSound.play();
+				return;
+			}
 			
 			// handle top & bottom wall reflect
 			if (newY < ball.radius / 2) {
-				// TODO: hit sound
+				hitWallSound.play();
 				ball.dy = -ball.dy;
 				ball.x = newX;
 				ball.y = ball.radius - newY;
 				return;
 			}
 			if (newY > 500 - ball.radius / 2) {
-				// TODO: hit sound
+				hitWallSound.play();
 				ball.dy = -ball.dy;
 				ball.x = newX;
 				ball.y = 1000 - ball.radius - newY;
@@ -80,14 +113,14 @@ package
 			
 			// handle outside left or right
 			if (newX < 0) {
-				// TODO: score sound
+				scoreSound.play();
 				scoreB.addScore();
 				ball.reLocate();
 				ball.emit();
 				return;
 			}
 			if (newX > 800) {
-				// TODO: score sound
+				scoreSound.play();
 				scoreA.addScore();
 				ball.reLocate();
 				ball.emit();
@@ -135,6 +168,7 @@ package
 			paddleB.reLocate();
 			scoreA.initScore();
 			scoreB.initScore();
+			startSound.play();
 			ball.emit();
 			driver.start();
 		}
