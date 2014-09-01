@@ -133,22 +133,27 @@ package
 		
 		private function dispatchElements(width:int, height:int):void 
 		{
-			scoreA = new ScoreBoard(width / 4, 20);
-			scoreB = new ScoreBoard(width / 4 * 3, 20);
+			scoreA = new ScoreBoard(width / 4 + 32, height / 2);
+			scoreB = new ScoreBoard(width / 4 * 3 - 32, height / 2);
 			this.addChild(scoreA);
 			this.addChild(scoreB);
 			
-			paddleA = new Paddle(40, height / 2, 20, 80, height, 0xff0000);
-			paddleB = new Paddle(width - 40, height / 2, 20, 80, height, 0x00ff00);
+			paddleA = new Paddle(40, height / 2, 20, 80, height, 0x9999ff);
+			paddleB = new Paddle(width - 40, height / 2, 20, 80, height, 0x666699);
 			this.addChild(paddleA);
 			this.addChild(paddleB);
 			
-			ball = new Ball(width / 2, height / 2, 20, 0xff00ff);
+			this.graphics.lineStyle(2, 0xbbbbff);
+			for (var i:int = 20; i < height - 20; i += 20) {
+				this.graphics.moveTo(width / 2, i);
+				this.graphics.lineTo(width / 2, i + 10);
+			}
+			
+			ball = new Ball(width / 2, height / 2, 20, 0x333399);
 			this.addChild(ball);
 			
 			tipPanel = new TipPanel(width / 2, height / 2);
 			this.addChild(tipPanel);
-			
 		}
 		
 		private function controllHintGame():void

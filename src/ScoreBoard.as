@@ -2,6 +2,7 @@ package
 {
 	import flash.display.Sprite;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 	/**
 	 * ...
 	 * @author renchu
@@ -14,10 +15,13 @@ package
 		public function ScoreBoard(x:int, y:int):void
 		{
 			scoreText = new TextField();
-			//scoreText.textHeight = 30;
-			//scoreText.textWidth = 20;
+			scoreText.height = 200;
+			var format:TextFormat = new TextFormat();
+			format.size = 128;
+			format.color = 0xbbbbff;
+			scoreText.defaultTextFormat = format;
 			this.addChild(scoreText);
-			setPosition(x, y);
+			setPosition(x - 32, y - 64);
 			initScore();
 		}
 		

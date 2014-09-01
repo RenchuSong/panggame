@@ -2,6 +2,7 @@ package
 {
 	import flash.display.Sprite;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 	/**
 	 * ...
 	 * @author renchu
@@ -27,14 +28,25 @@ package
 			
 			pressTip = new TextField();
 			pressTip.width = 400;
-			pressTip.x = -100;
+			pressTip.x = -110;
 			pressTip.y = 60;
 			this.addChild(pressTip);
+			
+			var format:TextFormat = new TextFormat();
+			format.size = 16;
+			format.color = 0x333366;
+			
+			var format2:TextFormat = new TextFormat();
+			format2.size = 20;
+			format2.color = 0x000066;
+			
+			text.defaultTextFormat = format;
+			pressTip.defaultTextFormat = format2;
 		}
 		
 		public function controllHint():void
 		{
-			text.text = "Player A: Press 'A' and 'D' to controll left paddle.\nPlayer B: Press 'Left' and 'Right' to controll right paddle.";
+			text.text = "Player A: Press 'A' and 'D' to controll left paddle.\n\nPlayer B: Press 'Left' and 'Right' to controll right paddle.";
 			pressTip.text = "Press 'Enter' to start game.";
 		}
 		
