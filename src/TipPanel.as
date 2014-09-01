@@ -13,7 +13,7 @@ package
 		public function TipPanel(x:int, y:int)
 		{
 			this.x = x; this.y = y;
-			this.graphics.beginFill(0xeeeeee);
+			this.graphics.beginFill(0xccccff);
 			this.graphics.drawRect(-200, -100, 400, 200);
 			this.graphics.endFill();
 			text = new TextField();
