@@ -21,8 +21,6 @@ package
 		private var paddleA:Paddle, paddleB:Paddle;
 		private var ball:Ball;
 		
-		//private var driver:Timer;
-		
 		[Embed(source = "start.mp3")]
 		private var startMusic:Class;
 		
@@ -159,8 +157,6 @@ package
 		
 		private function controllHintGame():void
 		{
-			//driver.stop();
-			//driver.removeEventListener(TimerEvent.TIMER, game);
 			stage.removeEventListener(Event.ENTER_FRAME, game);
 			
 			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPlayGame);
@@ -171,14 +167,12 @@ package
 		{
 			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyHintGame);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPlayGame);
-			//driver.addEventListener(TimerEvent.TIMER, game);
 			paddleA.reLocate();
 			paddleB.reLocate();
 			scoreA.initScore();
 			scoreB.initScore();
 			startSound.play();
 			ball.emit();
-			//driver.start();
 			stage.addEventListener(Event.ENTER_FRAME, game);
 		}
 		
