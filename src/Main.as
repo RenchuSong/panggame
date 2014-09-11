@@ -21,7 +21,7 @@ package
 		private var paddleA:Paddle, paddleB:Paddle;
 		private var ball:Ball;
 		
-		private var driver:Timer;
+		//private var driver:Timer;
 		
 		[Embed(source = "start.mp3")]
 		private var startMusic:Class;
@@ -52,7 +52,8 @@ package
 			// entry point
 			
 			dispatchElements(800, 500);
-			driver = new Timer(10);
+			
+			stage.frameRate = 60;
 			
 			tipPanel.controllHint();
 			controllHintGame();
@@ -64,7 +65,7 @@ package
 			hitPaddleSound = new hitPaddleMusic() as Sound;
 		}
 		
-		private function game(event:TimerEvent):void
+		private function game(event:Event):void
 		{
 			// check score, judge win
 			if (scoreA.win()) {
@@ -158,8 +159,10 @@ package
 		
 		private function controllHintGame():void
 		{
-			driver.stop();
-			driver.removeEventListener(TimerEvent.TIMER, game);
+			//driver.stop();
+			//driver.removeEventListener(TimerEvent.TIMER, game);
+			stage.removeEventListener(Event.ENTER_FRAME, game);
+			
 			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPlayGame);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHintGame);
 		}
@@ -168,14 +171,15 @@ package
 		{
 			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyHintGame);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPlayGame);
-			driver.addEventListener(TimerEvent.TIMER, game);
+			//driver.addEventListener(TimerEvent.TIMER, game);
 			paddleA.reLocate();
 			paddleB.reLocate();
 			scoreA.initScore();
 			scoreB.initScore();
 			startSound.play();
 			ball.emit();
-			driver.start();
+			//driver.start();
+			stage.addEventListener(Event.ENTER_FRAME, game);
 		}
 		
 		private function keyHintGame(event:KeyboardEvent):void
